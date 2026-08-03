@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real Estate Advisory Hub</title>
+  <!-- Tailwind CSS via CDN for styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background-color: #090d16; color: #f1f5f9; font-family: system-ui, -apple-system, sans-serif; }
+  </style>
+</head>
+<body class="p-4 md:p-8">
+
+  <div class="max-w-4xl mx-auto space-y-6">
+
+    <!-- Header Section -->
+    <header class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+        <div>
+          <h1 class="text-2xl font-bold text-emerald-400">مرحباً عبد الرحمن 👋</h1>
+          <p class="text-slate-400 text-sm mt-1">نظام إدارة الاستشارات والعائد الاستثماري المباشر</p>
+        </div>
+        <button onclick="addDeal()" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-4 py-2 rounded-xl text-sm transition shadow-lg">
+          + تسجيل صفقة جديدة 🎯
+        </button>
+      </div>
+
+      <!-- Target Progress -->
+      <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden">
+        <div id="progressBar" class="bg-emerald-400 h-full w-[40%] transition-all duration-500"></div>
+      </div>
+      <div class="flex justify-between text-xs text-slate-400 mt-2 font-mono">
+        <span id="achievedText">المحقق: 20,000,000 ج.م</span>
+        <span>التارجت: 50,000,000 ج.م</span>
+      </div>
+    </header>
+
+    <!-- Financial ROI Calculator Tool -->
+    <main class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      
+      <!-- Inputs Card -->
+      <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
+        <h2 class="text-lg font-bold text-slate-200 border-b border-slate-800 pb-2">⚡ حاسبة العائد السريع</h2>
+        
+        <div>
+          <div class="flex justify-between text-sm mb-1">
+            <span class="text-slate-400">سعر الوحدة الإجمالي</span>
+            <span id="priceVal" class="text-emerald-400 font-bold">10,000,000 ج.م</span>
+          </div>
+          <input type="range" id="unitPrice" min="2000000" max="50000000" step="500000" value="10000000" oninput="calculate()" class="w-full accent-emerald-500 bg-slate-800">
+        </div>
+
+        <div>
+          <div class="flex justify-between text-sm mb-1">
+            <span class="text-slate-400">نسبة المقدم (<span id="dpPercentVal">10</span>%)</span>
+            <span id="dpAmountVal" class="text-emerald-400 font-bold">1,000,000 ج.م</span>
+          </div>
+          <input type="range" id="dpPercent" min="5" max="50" step="5" value="10" oninput="calculate()" class="w-full accent-emerald-500 bg-slate-800">
+        </div>
+
+        <div>
+          <div class="flex justify-between text-sm mb-1">
+            <span class="text-slate-400">العائد الإيجاري المتوقع (<span id="rentPercentVal">9</span>%)</span>
+            <span id="rentAmountVal" class="text-cyan-400 font-bold">900,000 ج.م/سنة</span>
+          </div>
+          <input type="range" id="rentPercent" min="5" max="15" step="0.5" value="9" oninput="calculate()" class="w-full accent-cyan-500 bg-slate-800">
+        </div>
+      </div>
+
+      <!-- Output Card -->
+      <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+        <div>
+          <h3 class="text-lg font-bold text-slate-200 border-b border-slate-800 pb-2">📊 ملخص التحليل المالي</h3>
+          <div class="space-y-3 mt-4">
+            <div class="flex justify-between p-3 bg-slate-950 rounded-xl border border-slate-800 text-sm">
+              <span class="text-slate-400">القسط السنوي (على 7 سنين):</span>
+              <span id="yearlyInstallment" class="font-bold text-slate-200">1,285,714 ج.م</span>
+            </div>
+            <div class="flex justify-between p-3 bg-emerald-950/40 border border-emerald-500/30 rounded-xl text-sm">
+              <span class="text-emerald-400 font-bold">صافي التدفق النقدي (سنة 1):</span>
+              <span id="netCashFlow" class="font-bold text-emerald-400">-385,714 ج.م</span>
+            </div>
+          </div>
+        </div>
+
+        <button onclick="shareProposal()" class="w-full mt-6 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-3 rounded-xl transition text-center text-sm shadow-lg">
+          مشاركة التحليل عبر WhatsApp 📱
+        </button>
+      </div>
+
+    </main>
+
+  </div>
+
+  <script>
+    let achieved = 20000000;
+    const target = 50000000;
+
+    function calculate() {
+      const price = parseFloat(document.getElementById('unitPrice').value);
+      const dpP = parseFloat(document.getElementById('dpPercent').value);
+      const rentP = parseFloat(document.getElementById('rentPercent').value);
+
+      const dpAmount = price * (dpP / 100);
+      const yearlyInstallment = (price - dpAmount) / 7;
+      const yearlyRent = price * (rentP / 100);
+      const netCash = yearlyRent - yearlyInstallment;
+
+      document.getElementById('priceVal').innerText = price.toLocaleString() + ' ج.م';
+      document.getElementById('dpPercentVal').innerText = dpP;
+      document.getElementById('dpAmountVal').innerText = dpAmount.toLocaleString() + ' ج.م';
+      document.getElementById('rentPercentVal').innerText = rentP;
+      document.getElementById('rentAmountVal').innerText = yearlyRent.toLocaleString() + ' ج.م/سنة';
+
+      document.getElementById('yearlyInstallment').innerText = Math.round(yearlyInstallment).toLocaleString() + ' ج.م';
+      document.getElementById('netCashFlow').innerText = Math.round(netCash).toLocaleString() + ' ج.م';
+    }
+
+    function addDeal() {
+      achieved += 5000000;
+      if (achieved > target) achieved = target;
+      const pct = (achieved / target) * 100;
+      document.getElementById('progressBar').style.width = pct + '%';
+      document.getElementById('achievedText').innerText = 'المحقق: ' + achieved.toLocaleString() + ' ج.م';
+      alert('مبروك! تم إضافة 5,000,000 ج.م لحساب التارجت 🎉');
+    }
+
+    function shareProposal() {
+      const price = document.getElementById('priceVal').innerText;
+      const dp = document.getElementById('dpAmountVal').innerText;
+      const text = `مرحباً بك، إليك ملخص التحليل المالي للوحدة الاستثمارية:%0A- سعر الوحدة: ${price}%0A- المقدم المطلوب: ${dp}%0A- جاهز لمناقشة التفاصيل في جلسة الاستشارة.`;
+      window.open(`https://wa.me/?text=${text}`, '_blank');
+    }
+  </script>
+
+</body>
+</html>
