@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>El Hawary Real Estate Advisory Hub</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <style>
     body { background-color: #020617; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
@@ -14,42 +15,34 @@
 
   <div class="max-w-5xl mx-auto space-y-8">
 
-    <!-- Top Gamified Header -->
-    <header class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-2xl relative overflow-hidden backdrop-blur-md">
+    <!-- Header Section -->
+    <header class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-2xl backdrop-blur-md">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         <div>
           <h1 class="text-3xl font-extrabold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
             مرحباً عبد الرحمن 👋
           </h1>
           <p class="text-slate-400 text-sm mt-1">
-            فاضلك <span id="remainingTargetText" class="text-emerald-400 font-bold font-mono">15,000,000 ج.م</span> وتعدي تارجت الشهر! 🚀
+            المحقق الحقيقي من قاعدة البيانات: <span id="achievedDisplay" class="text-emerald-400 font-bold font-mono">جاري التحميل...</span>
           </p>
         </div>
-        <button onclick="triggerWin()" class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-slate-950 font-extrabold px-6 py-3 rounded-2xl text-sm transition-all shadow-lg shadow-emerald-500/20 active:scale-95 flex items-center gap-2">
-          <span>🎉</span> تسجيل صفقة جديدة
+        <button onclick="addDealToSupabase()" class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-slate-950 font-extrabold px-6 py-3 rounded-2xl text-sm transition-all shadow-lg active:scale-95 flex items-center gap-2">
+          <span>🎉</span> تسجيل صفقة جديدة بقاعدة البيانات
         </button>
       </div>
 
       <!-- Interactive Progress Bar -->
       <div class="w-full bg-slate-950 h-4 rounded-full overflow-hidden p-0.5 border border-slate-800">
-        <div id="progressBar" class="bg-gradient-to-r from-emerald-500 to-cyan-400 h-full rounded-full transition-all duration-700 ease-out" style="width: 70%;"></div>
-      </div>
-      <div class="flex justify-between text-xs text-slate-400 mt-3 font-mono">
-        <span id="achievedText">المحقق: 35,000,000 ج.م (70%)</span>
-        <span>التارجت: 50,000,000 ج.م</span>
+        <div id="progressBar" class="bg-gradient-to-r from-emerald-500 to-cyan-400 h-full rounded-full transition-all duration-700 ease-out" style="width: 0%;"></div>
       </div>
     </header>
 
-    <!-- Main Dynamic Hub -->
+    <!-- Main ROI Calculator -->
     <main class="grid grid-cols-1 lg:grid-cols-2 gap-8">
       
-      <!-- Interactive Inputs -->
-      <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl backdrop-blur-sm space-y-6 shadow-xl">
-        <h2 class="text-xl font-bold text-slate-200 border-b border-slate-800 pb-3 flex items-center gap-2">
-          <span>⚡</span> حاسبة العائد الاستثماري المباشر
-        </h2>
+      <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl space-y-6">
+        <h2 class="text-xl font-bold text-slate-200 border-b border-slate-800 pb-3">⚡ حاسبة العائد الاستثماري</h2>
         
-        <!-- Price Slider -->
         <div>
           <div class="flex justify-between text-sm mb-2">
             <span class="text-slate-400">سعر الوحدة الإجمالي</span>
@@ -58,7 +51,6 @@
           <input type="range" id="unitPrice" min="2000000" max="50000000" step="500000" value="10000000" oninput="calculate()" class="w-full accent-emerald-500 bg-slate-800 h-2 rounded-lg cursor-pointer">
         </div>
 
-        <!-- Down Payment Slider -->
         <div>
           <div class="flex justify-between text-sm mb-2">
             <span class="text-slate-400">نسبة المقدم (<span id="dpPercentVal">10</span>%)</span>
@@ -67,7 +59,6 @@
           <input type="range" id="dpPercent" min="5" max="50" step="5" value="10" oninput="calculate()" class="w-full accent-emerald-500 bg-slate-800 h-2 rounded-lg cursor-pointer">
         </div>
 
-        <!-- Rent Return Slider -->
         <div>
           <div class="flex justify-between text-sm mb-2">
             <span class="text-slate-400">العائد الإيجاري المتوقع سنوياً (<span id="rentPercentVal">9</span>%)</span>
@@ -77,12 +68,9 @@
         </div>
       </div>
 
-      <!-- Financial Analysis Output -->
-      <div class="bg-gradient-to-br from-slate-900 to-slate-900/90 border border-slate-800 p-6 rounded-3xl flex flex-col justify-between shadow-xl relative">
+      <div class="bg-gradient-to-br from-slate-900 to-slate-900/90 border border-slate-800 p-6 rounded-3xl flex flex-col justify-between">
         <div>
-          <h3 class="text-lg font-bold text-slate-200 border-b border-slate-800 pb-3 flex items-center gap-2">
-            <span>📊</span> ملخص التحليل المالي للعميل
-          </h3>
+          <h3 class="text-lg font-bold text-slate-200 border-b border-slate-800 pb-3">📊 ملخص التحليل المالي</h3>
 
           <div class="space-y-4 mt-6">
             <div class="flex justify-between items-center p-4 bg-slate-950/70 rounded-2xl border border-slate-800 text-sm">
@@ -90,22 +78,16 @@
               <span id="yearlyInstallment" class="font-mono text-slate-200 font-semibold">1,285,714 ج.م</span>
             </div>
 
-            <div class="flex justify-between items-center p-4 bg-slate-950/70 rounded-2xl border border-slate-800 text-sm">
-              <span class="text-slate-400">الإيجار السنوي المتوقع:</span>
-              <span id="rentDisplay" class="font-mono text-cyan-400 font-semibold">+900,000 ج.م</span>
-            </div>
-
             <div class="flex justify-between items-center p-4 bg-emerald-950/30 border border-emerald-500/30 rounded-2xl">
               <div>
                 <span class="block text-emerald-400 font-bold text-sm">صافي التدفق النقدي (السنة الأولى):</span>
-                <span class="text-xs text-slate-400">(الإيجار المتوقع - القسط السنوي)</span>
               </div>
               <span id="netCashFlow" class="font-mono font-bold text-lg text-rose-400">-385,714 ج.م</span>
             </div>
           </div>
         </div>
 
-        <button onclick="shareProposal()" class="w-full mt-8 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-slate-950 font-bold py-4 rounded-2xl transition duration-200 text-center shadow-lg shadow-emerald-500/10 text-sm flex items-center justify-center gap-2 active:scale-95">
+        <button onclick="shareProposal()" class="w-full mt-8 bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-bold py-4 rounded-2xl text-sm flex items-center justify-center gap-2">
           <span>📱</span> مشاركة التحليل عبر WhatsApp
         </button>
       </div>
@@ -115,8 +97,40 @@
   </div>
 
   <script>
-    let achieved = 35000000;
-    const target = 50000000;
+    // ⚠️ حط بياناتك هنا بين العلامات ''
+    const SUPABASE_URL = 'https://qfnkcgoahvlyaikczmkg.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_4L_oWcu4o7Vp4XzL-BtmrA_sUMdwX3f';
+
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const target = 50000000;
+
+    async function fetchDeals() {
+      const { data, error } = await _supabase.from('deals').select('deal_value');
+      if (error) {
+        console.error('Error fetching deals:', error);
+        return;
+      }
+      
+      let totalAchieved = data ? data.reduce((sum, deal) => sum + Number(deal.deal_value), 0) : 0;
+      const pct = Math.min((totalAchieved / target) * 100, 100);
+
+      document.getElementById('achievedDisplay').innerText = totalAchieved.toLocaleString() + ' ج.م (' + pct.toFixed(0) + '%)';
+      document.getElementById('progressBar').style.width = pct + '%';
+    }
+
+    async function addDealToSupabase() {
+      const dealValue = 5000000;
+      const { error } = await _supabase.from('deals').insert([
+        { client_name: 'صفقة مبيعات جديدة', deal_value: dealValue, commission_earned: dealValue * 0.01 }
+      ]);
+
+      if (error) {
+        alert('حدث خطأ أثناء التحديث: ' + error.message);
+      } else {
+        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        fetchDeals();
+      }
+    }
 
     function calculate() {
       const price = parseFloat(document.getElementById('unitPrice').value);
@@ -135,7 +149,6 @@
       document.getElementById('rentAmountVal').innerText = yearlyRent.toLocaleString() + ' ج.م/سنوياً';
 
       document.getElementById('yearlyInstallment').innerText = Math.round(yearlyInstallment).toLocaleString() + ' ج.م';
-      document.getElementById('rentDisplay').innerText = '+' + Math.round(yearlyRent).toLocaleString() + ' ج.م';
 
       const netCashEl = document.getElementById('netCashFlow');
       netCashEl.innerText = Math.round(netCash).toLocaleString() + ' ج.م';
@@ -146,23 +159,6 @@
       }
     }
 
-    function triggerWin() {
-      achieved += 5000000;
-      if (achieved > target) achieved = target;
-      
-      const pct = (achieved / target) * 100;
-      document.getElementById('progressBar').style.width = pct + '%';
-      document.getElementById('achievedText').innerText = `المحقق: ${achieved.toLocaleString()} ج.م (${pct.toFixed(0)}%)`;
-      document.getElementById('remainingTargetText').innerText = `${(target - achieved).toLocaleString()} ج.م`;
-
-      // Trigger Confetti FX
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
-    }
-
     function shareProposal() {
       const price = document.getElementById('priceVal').innerText;
       const dp = document.getElementById('dpAmountVal').innerText;
@@ -170,6 +166,8 @@
       const text = `مرحباً بك، إليك ملخص التحليل المالي للفرصة الاستثمارية:%0A- سعر الوحدة: ${price}%0A- المقدم المطلوب: ${dp}%0A- صافي التدفق النقدي المتوقع: ${netCash}%0A%0Aجاهز لمناقشة التفاصيل في جلسة الاستشارة.`;
       window.open(`https://wa.me/?text=${text}`, '_blank');
     }
+
+    fetchDeals();
   </script>
 
 </body>
