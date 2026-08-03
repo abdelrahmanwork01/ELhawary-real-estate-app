@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>El Hawary Advisory System</title>
+  <title>El Hawary Advisory System OS</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
@@ -15,11 +15,11 @@
 </head>
 <body class="pb-24 pt-4 px-4 md:px-8 min-h-screen">
 
-  <!-- Authentication Screen (مقفول برقم سر/دخول) -->
+  <!-- Authentication Screen -->
   <div id="authScreen" class="max-w-md mx-auto my-auto mt-16 bg-slate-900 border border-slate-800 p-8 rounded-3xl shadow-2xl space-y-6">
     <div class="text-center space-y-2">
-      <h1 class="text-2xl font-bold text-emerald-400">نظام الهواري للاستشارات العقارية</h1>
-      <p class="text-slate-400 text-sm">تسجيل الدخول / طلب انضمام للنظام المغلق</p>
+      <h1 class="text-2xl font-bold text-emerald-400">El Hawary Advisory System</h1>
+      <p class="text-slate-400 text-sm">نظام إدارة وتتبع المبيعات والاستشارات المغلق</p>
     </div>
     
     <div class="space-y-4">
@@ -33,79 +33,105 @@
     </div>
   </div>
 
-  <!-- Main System Dashboard (يظهر بعد الدخول فقط) -->
+  <!-- Main System Dashboard -->
   <div id="appScreen" class="max-w-5xl mx-auto space-y-6 hidden">
 
-    <!-- Header & Profile Info -->
+    <!-- Header -->
     <header class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-2xl flex justify-between items-center">
       <div>
-        <h1 class="text-2xl font-extrabold text-emerald-400">El Hawary Operating System 🚀</h1>
-        <p class="text-xs text-slate-400 mt-1" id="userRoleBadge">الصفة: جاري الفحص...</p>
+        <h1 class="text-xl md:text-2xl font-extrabold text-emerald-400">El Hawary Operating System 🚀</h1>
+        <p class="text-xs text-slate-400 mt-1" id="userRoleBadge">المستخدم: جاري الفحص...</p>
       </div>
-      <button onclick="logout()" class="text-xs bg-rose-500/10 border border-rose-500/30 text-rose-400 px-3 py-2 rounded-xl">تسجيل خروج</button>
+      <button onclick="logout()" class="text-xs bg-rose-500/10 border border-rose-500/30 text-rose-400 px-3 py-2 rounded-xl hover:bg-rose-500/20 transition">خروج</button>
     </header>
 
-    <!-- Tab 1: Dashboard & Target -->
+    <!-- Tab 1: Dashboard & Deals -->
     <section id="tab-dashboard" class="tab-content active space-y-6">
-      <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl space-y-4">
+      <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl space-y-4 shadow-xl">
         <div class="flex justify-between items-center">
-          <h2 class="text-lg font-bold">🎯 التارجت والمبيعات المحققة</h2>
-          <button onclick="addDeal()" class="bg-emerald-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs">+ إضافة صفقة</button>
+          <h2 class="text-lg font-bold text-slate-100">🎯 التارجت والمبيعات المكتملة</h2>
+          <button onclick="addDeal()" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs transition">+ تسجيل صفقة</button>
         </div>
         <div class="w-full bg-slate-950 h-4 rounded-full overflow-hidden border border-slate-800">
-          <div id="progressBar" class="bg-emerald-400 h-full w-0 transition-all duration-700"></div>
+          <div id="progressBar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full w-0 transition-all duration-700"></div>
         </div>
-        <p id="achievedDisplay" class="text-sm font-mono text-emerald-400 text-left">المحقق: 0 ج.م</p>
+        <p id="achievedDisplay" class="text-sm font-mono text-emerald-400 text-left">المحقق: جاري التحميل...</p>
       </div>
     </section>
 
     <!-- Tab 2: ROI Calculator -->
     <section id="tab-calculator" class="tab-content space-y-6">
-      <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl space-y-4">
-        <h2 class="text-lg font-bold text-slate-200">⚡ حاسبة العائد الاستثماري المباشر</h2>
-        <div class="space-y-4">
+      <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl space-y-4 shadow-xl">
+        <h2 class="text-lg font-bold text-slate-200">⚡ حاسبة العائد الاستثماري السريع</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="text-xs text-slate-400">سعر الوحدة</label>
-            <input type="number" id="calcPrice" value="10000000" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-sm font-mono mt-1">
+            <label class="text-xs text-slate-400">سعر الوحدة الإجمالي (ج.م)</label>
+            <input type="number" id="calcPrice" value="10000000" oninput="runCalc()" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-sm font-mono mt-1 text-slate-100">
           </div>
           <div>
             <label class="text-xs text-slate-400">نسبة المقدم (%)</label>
-            <input type="number" id="calcDp" value="10" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-sm font-mono mt-1">
+            <input type="number" id="calcDp" value="10" oninput="runCalc()" class="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-sm font-mono mt-1 text-slate-100">
           </div>
-          <button onclick="runCalc()" class="w-full bg-cyan-500 text-slate-950 font-bold py-3 rounded-xl text-sm">حساب النتائج</button>
-          <div id="calcResult" class="p-4 bg-slate-950 rounded-xl text-sm font-mono text-emerald-400"></div>
+        </div>
+        <div id="calcResult" class="p-4 bg-slate-950 rounded-xl text-sm font-mono space-y-2 border border-slate-800">
+          <!-- نتائج الحاسبة -->
         </div>
       </div>
     </section>
 
-    <!-- Tab 3: CRM (Clients) -->
+    <!-- Tab 3: CRM Clients -->
     <section id="tab-crm" class="tab-content space-y-6">
-      <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl space-y-4">
-        <h2 class="text-lg font-bold">👥 إدارة العملاء والطلبات</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <input type="text" id="cName" placeholder="اسم العميل" class="bg-slate-950 border border-slate-800 p-3 rounded-xl text-sm">
-          <input type="text" id="cPhone" placeholder="الهاتف" class="bg-slate-950 border border-slate-800 p-3 rounded-xl text-sm">
-          <button onclick="addClient()" class="bg-emerald-500 text-slate-950 font-bold rounded-xl text-sm py-3">حفظ العميل</button>
+      <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl space-y-4 shadow-xl">
+        <h2 class="text-lg font-bold text-slate-100">👥 إدارة قاعدة العملاء (CRM)</h2>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+          <input type="text" id="cName" placeholder="اسم العميل" class="bg-slate-950 border border-slate-800 p-3 rounded-xl text-sm text-slate-100">
+          <input type="text" id="cPhone" placeholder="رقم الهاتف" class="bg-slate-950 border border-slate-800 p-3 rounded-xl text-sm text-slate-100">
+          <input type="number" id="cBudget" placeholder="الميزانية المتوقعة" class="bg-slate-950 border border-slate-800 p-3 rounded-xl text-sm text-slate-100">
+          <button onclick="addClient()" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold rounded-xl text-sm py-3 transition">حفظ العميل 💾</button>
+        </div>
+        
+        <div class="mt-6">
+          <h3 class="text-sm font-bold text-slate-400 mb-3">قائمة العملاء المسجلين:</h3>
+          <div id="clientsList" class="space-y-2">
+            <!-- قائمة العملاء -->
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Tab 4: Admin Controls (قبول الأعضاء) -->
+    <!-- Tab 4: Projects Inventory -->
+    <section id="tab-projects" class="tab-content space-y-6">
+      <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl space-y-4 shadow-xl">
+        <h2 class="text-lg font-bold text-slate-100">🏢 دليل المشروعات والفرص الاستثمارية</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <input type="text" id="pTitle" placeholder="اسم المشروع (مثال: مول خيوط)" class="bg-slate-950 border border-slate-800 p-3 rounded-xl text-sm text-slate-100">
+          <input type="text" id="pLocation" placeholder="المنطقة (مثال: العبور / الشروق)" class="bg-slate-950 border border-slate-800 p-3 rounded-xl text-sm text-slate-100">
+          <button onclick="addProject()" class="bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold rounded-xl text-sm py-3 transition">إضافة مشروع 🏗️</button>
+        </div>
+
+        <div id="projectsList" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+          <!-- كروت المشاريع -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 5: Admin Panel -->
     <section id="tab-admin" class="tab-content space-y-6">
-      <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl space-y-4">
-        <h2 class="text-lg font-bold text-amber-400">🔐 لوحة تحكم الأدمن (قبول وتفعيل الأعضاء)</h2>
+      <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl space-y-4 shadow-xl">
+        <h2 class="text-lg font-bold text-amber-400">🔐 لوحة تحكم الأدمن (إدارة الأعضاء والصلاحيات)</h2>
         <div id="pendingUsersList" class="space-y-2 text-sm">
-          <p class="text-slate-500">جاري تحميل طلبات الانضمام المعلقة...</p>
+          <p class="text-slate-500">جاري تحميل البيانات...</p>
         </div>
       </div>
     </section>
 
     <!-- Navigation Bar السفلي -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/95 border-t border-slate-800 p-3 backdrop-blur-md flex justify-around text-xs font-bold">
-      <button onclick="switchTab('dashboard')" class="text-emerald-400 flex flex-col items-center"><span>🎯</span> الرئيسية</button>
-      <button onclick="switchTab('calculator')" class="text-slate-400 flex flex-col items-center"><span>⚡</span> الحاسبة</button>
-      <button onclick="switchTab('crm')" class="text-slate-400 flex flex-col items-center"><span>👥</span> العملاء</button>
-      <button onclick="switchTab('admin')" id="adminTabBtn" class="text-amber-400 flex flex-col items-center hidden"><span>🔐</span> الأدمن</button>
+    <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/95 border-t border-slate-800 p-3 backdrop-blur-md flex justify-around text-xs font-bold z-50">
+      <button onclick="switchTab('dashboard')" class="text-emerald-400 flex flex-col items-center gap-1"><span>🎯</span> الرئيسية</button>
+      <button onclick="switchTab('calculator')" class="text-slate-400 flex flex-col items-center gap-1"><span>⚡</span> الحاسبة</button>
+      <button onclick="switchTab('crm')" class="text-slate-400 flex flex-col items-center gap-1"><span>👥</span> العملاء</button>
+      <button onclick="switchTab('projects')" class="text-slate-400 flex flex-col items-center gap-1"><span>🏢</span> المشروعات</button>
+      <button onclick="switchTab('admin')" id="adminTabBtn" class="text-amber-400 flex flex-col items-center gap-1 hidden"><span>🔐</span> الأدمن</button>
     </nav>
 
   </div>
@@ -114,12 +140,13 @@
     const SUPABASE_URL = 'https://qfnkcgoahvlyaikczmkg.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_4L_oWcu4o7Vp4XzL-BtmrA_sUMdwX3f';
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const target = 50000000;
 
     async function login() {
       const email = document.getElementById('authEmail').value;
       const password = document.getElementById('authPass').value;
       const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
-      if (error) return alert('خطأ في الدخول: ' + error.message);
+      if (error) return alert('خطأ في تسجيل الدخول: ' + error.message);
       initApp();
     }
 
@@ -130,7 +157,7 @@
       if (error) return alert('خطأ في طلب الانضمام: ' + error.message);
       if (data.user) {
         await _supabase.from('profiles').insert([{ id: data.user.id, email: email, role: 'pending' }]);
-        alert('تم تقديم طلب الانضمام بنجاح! في انتظار موافقة الأدمن.');
+        alert('تم ارسال طلب الانضمام! في انتظار تفعيل الحساب من الأدمن.');
       }
     }
 
@@ -141,18 +168,23 @@
       const { data: profile } = await _supabase.from('profiles').select('*').eq('id', user.id).single();
 
       if (!profile || (profile.role !== 'admin' && profile.role !== 'approved')) {
-        alert('حسابك قيد المراجعة أو غير مصرح له بالدخول.');
+        alert('حسابك قيد المراجعة، يرجى التواصل مع الأدمن للتفعيل.');
         return;
       }
 
       document.getElementById('authScreen').classList.add('hidden');
       document.getElementById('appScreen').classList.remove('hidden');
-      document.getElementById('userRoleBadge').innerText = `المستخدم: ${user.email} | الصلاحية: ${profile.role}`;
+      document.getElementById('userRoleBadge').innerText = `المستخدم: ${user.email} | الصلاحية: ${profile.role.toUpperCase()}`;
 
       if (profile.role === 'admin') {
         document.getElementById('adminTabBtn').classList.remove('hidden');
-        loadPendingUsers();
+        loadUsersForAdmin();
       }
+
+      loadDeals();
+      loadClients();
+      loadProjects();
+      runCalc();
     }
 
     function switchTab(tabId) {
@@ -160,25 +192,117 @@
       document.getElementById('tab-' + tabId).classList.add('active');
     }
 
-    async function loadPendingUsers() {
-      const { data } = await _supabase.from('profiles').select('*').eq('role', 'pending');
-      const container = document.getElementById('pendingUsersList');
+    async function loadDeals() {
+      const { data } = await _supabase.from('deals').select('deal_value');
+      let total = data ? data.reduce((sum, d) => sum + Number(d.deal_value), 0) : 0;
+      const pct = Math.min((total / target) * 100, 100);
+      document.getElementById('achievedDisplay').innerText = `المحقق: ${total.toLocaleString()} ج.م (${pct.toFixed(0)}%)`;
+      document.getElementById('progressBar').style.width = pct + '%';
+    }
+
+    async function addDeal() {
+      const val = prompt('ادخل قيمة الصفقة الجديدة (ج.م):', '5000000');
+      if (!val) return;
+      await _supabase.from('deals').insert([{ client_name: 'عميل جديد', deal_value: Number(val) }]);
+      confetti({ particleCount: 80, spread: 60 });
+      loadDeals();
+    }
+
+    async function loadClients() {
+      const { data } = await _supabase.from('clients').select('*').order('created_at', { ascending: false });
+      const container = document.getElementById('clientsList');
       if (!data || data.length === 0) {
-        container.innerHTML = '<p class="text-slate-500">لا يوجد طلبات انضمام معلقة حالياً.</p>';
+        container.innerHTML = '<p class="text-xs text-slate-500">لا يوجد عملاء مسجلين حالياً.</p>';
         return;
       }
-      container.innerHTML = data.map(u => `
-        <div class="flex justify-between items-center p-3 bg-slate-950 rounded-xl border border-slate-800">
-          <span>${u.email}</span>
-          <button onclick="approveUser('${u.id}')" class="bg-emerald-500 text-slate-950 text-xs px-3 py-1.5 rounded-lg font-bold">قبول الحساب</button>
+      container.innerHTML = data.map(c => `
+        <div class="flex justify-between items-center p-3.5 bg-slate-950 rounded-xl border border-slate-800 text-sm">
+          <div>
+            <span class="font-bold text-slate-200 block">${c.name}</span>
+            <span class="text-xs text-slate-400 font-mono">${c.phone || 'بدون هاتف'} | الميزانية: ${(Number(c.budget)||0).toLocaleString()} ج.م</span>
+          </div>
+          <a href="https://wa.me/${c.phone}" target="_blank" class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-lg text-xs font-bold">واتساب 💬</a>
         </div>
       `).join('');
     }
 
-    async function approveUser(userId) {
-      await _supabase.from('profiles').update({ role: 'approved' }).eq('id', userId);
-      alert('تم قبول الحساب بنجاح!');
-      loadPendingUsers();
+    async function addClient() {
+      const name = document.getElementById('cName').value;
+      const phone = document.getElementById('cPhone').value;
+      const budget = document.getElementById('cBudget').value;
+      if (!name) return alert('يرجى كتابة اسم العميل');
+
+      await _supabase.from('clients').insert([{ name, phone, budget }]);
+      alert('تم حفظ العميل بنجاح! 🎉');
+      document.getElementById('cName').value = '';
+      document.getElementById('cPhone').value = '';
+      document.getElementById('cBudget').value = '';
+      loadClients();
+    }
+
+    async function loadProjects() {
+      const { data } = await _supabase.from('projects').select('*').order('created_at', { ascending: false });
+      const container = document.getElementById('projectsList');
+      if (!data || data.length === 0) {
+        container.innerHTML = '<p class="text-xs text-slate-500">لا يوجد مشاريع مسجلة.</p>';
+        return;
+      }
+      container.innerHTML = data.map(p => `
+        <div class="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
+          <h4 class="font-bold text-emerald-400">${p.title}</h4>
+          <p class="text-xs text-slate-400">المنطقة: <span class="text-slate-200">${p.location || 'غير محدد'}</span></p>
+        </div>
+      `).join('');
+    }
+
+    async function addProject() {
+      const title = document.getElementById('pTitle').value;
+      const location = document.getElementById('pLocation').value;
+      if (!title) return alert('يرجى كتابة اسم المشروع');
+
+      await _supabase.from('projects').insert([{ title, location }]);
+      alert('تم حفظ المشروع بنجاح!');
+      document.getElementById('pTitle').value = '';
+      document.getElementById('pLocation').value = '';
+      loadProjects();
+    }
+
+    function runCalc() {
+      const price = Number(document.getElementById('calcPrice').value) || 0;
+      const dpP = Number(document.getElementById('calcDp').value) || 0;
+      const dpVal = price * (dpP / 100);
+      const installment = (price - dpVal) / 7;
+
+      document.getElementById('calcResult').innerHTML = `
+        <p class="text-slate-400">سعر الوحدة: <span class="text-slate-100 font-bold">${price.toLocaleString()} ج.م</span></p>
+
+        <p class="text-slate-400">المقدم المطلـوب (${dpP}%): <span class="text-emerald-400 font-bold">${dpVal.toLocaleString()} ج.م</span></p>
+        <p class="text-slate-400">القسط السنوي (7 سنوات): <span class="text-cyan-400 font-bold">${Math.round(installment).toLocaleString()} ج.م/سنوياً</span></p>
+      `;
+    }
+
+    async function loadUsersForAdmin() {
+      const { data } = await _supabase.from('profiles').select('*');
+      const container = document.getElementById('pendingUsersList');
+      if (!data) return;
+
+      container.innerHTML = data.map(u => `
+        <div class="flex justify-between items-center p-3 bg-slate-950 rounded-xl border border-slate-800">
+          <div>
+            <span class="font-bold text-slate-200 block">${u.email}</span>
+            <span class="text-xs text-slate-500">الصفة الحالية: ${u.role}</span>
+          </div>
+          ${u.role === 'pending' ? `
+            <button onclick="updateRole('${u.id}', 'approved')" class="bg-emerald-500 text-slate-950 text-xs px-3 py-1.5 rounded-lg font-bold">قبول الحساب</button>
+          ` : `<span class="text-xs text-emerald-400 font-bold">مفعل ✓</span>`}
+        </div>
+      `).join('');
+    }
+
+    async function updateRole(userId, newRole) {
+      await _supabase.from('profiles').update({ role: newRole }).eq('id', userId);
+      alert('تم تحديث حالة المستخدم بنجاح!');
+      loadUsersForAdmin();
     }
 
     async function logout() {
@@ -186,8 +310,8 @@
       location.reload();
     }
 
-    // تشغيل التلقائي عند التحميل
     _supabase.auth.getUser().then(({ data: { user } }) => { if (user) initApp(); });
   </script>
+
 </body>
 </html>
