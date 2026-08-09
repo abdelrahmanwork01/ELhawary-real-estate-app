@@ -75,6 +75,7 @@
                 <div>
                     <h1 class="text-2xl font-bold text-black">EH REAL ESTATE ADVISORY</h1>
                     <p class="text-xs text-gray-600">Institutional Investment Memorandum & Stress Test Analysis</p>
+                    <p class="text-xs font-bold text-amber-700 mt-1">Investor: <span id="printInvestorName">N/A</span> | Project: <span id="printProjectName">N/A</span></p>
                 </div>
                 <div class="text-right text-xs text-gray-500">
                     <p>Date: <span id="printDate"></span></p>
@@ -108,11 +109,11 @@
                     <span class="text-xs text-slate-400" data-i18n="currLabel">Currency:</span>
                     <select id="currencySelect" onchange="update()" class="bg-transparent text-xs font-bold text-amber-400 focus:outline-none cursor-pointer">
                         <optgroup label="Arab Currencies">
-                            <option value="ج.م" selected>EGP (ج.م)</option>
-                            <option value="ر.س">SAR (ر.س)</option>
-                            <option value="د.إ">AED (د.إ)</option>
-                            <option value="ر.ق">QAR (ر.ق)</option>
-                            <option value="د.ك">KWD (د.ك)</option>
+                            <option value="EGP" selected>EGP (ج.م)</option>
+                            <option value="SAR">SAR (ر.س)</option>
+                            <option value="AED">AED (د.إ)</option>
+                            <option value="QAR">QAR (ر.ق)</option>
+                            <option value="KWD">KWD (د.ك)</option>
                         </optgroup>
                         <optgroup label="Global Currencies">
                             <option value="$">USD ($)</option>
@@ -128,10 +129,20 @@
             </div>
         </header>
 
+        <!-- Investor Info Bar -->
+        <section class="max-w-7xl mx-auto mb-6 glass-card p-4 rounded-2xl grid grid-cols-1 md:grid-cols-2 gap-4 no-print border-amber-500/20">
+            <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-amber-400" data-i18n="investorLabel">Client Name:</span>
+                <input type="text" id="investorNameInput" placeholder="مثال: د. أحمد المحمدي" oninput="updatePrintMeta()" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white focus:border-amber-500 focus:outline-none w-full">
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-amber-400" data-i18n="projectLabel">Project Name:</span>
+                <input type="text" id="projectNameInput" placeholder="مثال: Taj City / Zed East" oninput="updatePrintMeta()" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white focus:border-amber-500 focus:outline-none w-full">
+            </div>
+        </section>
+
         <!-- Scenario & Project Type Bar -->
         <section class="max-w-7xl mx-auto mb-6 glass-card p-4 rounded-2xl flex flex-wrap items-center justify-between gap-4 no-print">
-            
-            <!-- Project Type Selection -->
             <div class="flex items-center gap-3">
                 <span class="text-xs font-bold text-slate-300" data-i18n="projTypeTitle">Project Status:</span>
                 <div class="flex items-center bg-slate-900/90 p-1 rounded-xl border border-slate-700 text-xs">
@@ -140,7 +151,6 @@
                 </div>
             </div>
 
-            <!-- Scenarios -->
             <div class="flex items-center gap-2">
                 <span class="text-xs font-bold text-slate-300 hidden md:inline" data-i18n="scenarioTitle">Scenario:</span>
                 <button onclick="applyScenario('bull')" id="scenBull" class="px-3 py-1.5 rounded-xl text-xs font-bold border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 transition-all" data-i18n="scenBull">🟢 Bull Case</button>
@@ -162,7 +172,7 @@
                 <div class="space-y-1.5">
                     <div class="flex justify-between text-xs">
                         <label class="text-slate-300 font-semibold" data-i18n="priceLabel">Purchase Price</label>
-                        <span class="currSym text-slate-400">ج.م</span>
+                        <span class="currSym text-slate-400">EGP</span>
                     </div>
                     <div class="flex items-center gap-2">
                         <input type="number" id="priceNum" value="5000000" step="50000" oninput="syncInput('price', this.value)" class="w-1/2 bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm font-bold text-white focus:border-sky-500 focus:outline-none">
@@ -183,7 +193,7 @@
                     </div>
                 </div>
 
-                <!-- Delivery Years Input (Supports Decimals e.g., 2.5 Years) -->
+                <!-- Delivery Years Input -->
                 <div id="deliveryContainer" class="space-y-1.5 hidden bg-amber-500/10 p-3 rounded-2xl border border-amber-500/20">
                     <div class="flex justify-between items-center">
                         <label class="text-xs text-amber-400 font-bold block" data-i18n="deliveryLabel">Delivery Time (Years Until Handover)</label>
@@ -211,7 +221,7 @@
                 <div class="space-y-1.5">
                     <div class="flex justify-between text-xs">
                         <label class="text-slate-300 font-semibold" data-i18n="rentLabel">Expected Monthly Rent (At Delivery)</label>
-                        <span class="currSym text-slate-400">ج.م</span>
+                        <span class="currSym text-slate-400">EGP</span>
                     </div>
                     <div class="flex items-center gap-2">
                         <input type="number" id="rentNum" value="35000" step="1000" oninput="syncInput('rent', this.value)" class="w-1/2 bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm font-bold text-emerald-400 focus:border-sky-500 focus:outline-none">
@@ -280,6 +290,28 @@
                     </div>
                 </div>
 
+                <!-- Resale / Exit at Handover Analysis Card -->
+                <div id="handoverExitCard" class="glass-card p-5 rounded-3xl border border-amber-500/30 bg-amber-500/5">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider" data-i18n="handoverTitle">🎯 Handover Exit Strategy (Resale Yield)</h3>
+                        <span id="handoverTimeBadge" class="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full font-bold">At Year 2.5</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-3 text-center">
+                        <div class="p-2 rounded-xl bg-slate-900/80">
+                            <span class="text-[10px] text-slate-400 block" data-i18n="paidTillHandover">Paid Till Handover</span>
+                            <strong id="paidTillHandoverVal" class="text-xs text-white">0</strong>
+                        </div>
+                        <div class="p-2 rounded-xl bg-slate-900/80">
+                            <span class="text-[10px] text-slate-400 block" data-i18n="propertyValueAtHandover">Est. Market Value</span>
+                            <strong id="propValAtHandoverVal" class="text-xs text-purple-400">0</strong>
+                        </div>
+                        <div class="p-2 rounded-xl bg-slate-900/80 border border-emerald-500/30">
+                            <span class="text-[10px] text-slate-400 block" data-i18n="handoverRoi">ROI on Capital Paid</span>
+                            <strong id="handoverRoiVal" class="text-xs text-emerald-400">0%</strong>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="glass-card p-6 rounded-3xl">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider" data-i18n="chartTitle">10-Year Wealth Accumulation Engine</h3>
@@ -293,7 +325,7 @@
                 <div class="glass-card p-5 rounded-3xl text-xs space-y-3">
                     <div class="flex justify-between font-bold border-b border-slate-800 pb-2 text-slate-300">
                         <span data-i18n="wfTitle">ANNUAL CASH FLOW WATERFALL (STABILIZED)</span>
-                        <span class="currSym">ج.م</span>
+                        <span class="currSym">EGP</span>
                     </div>
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
                         <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
@@ -315,8 +347,9 @@
                     </div>
                 </div>
 
-                <div class="glass-card p-5 rounded-3xl text-xs space-y-3 no-print">
-                    <div class="flex justify-between items-center cursor-pointer" onclick="toggleTable()">
+                <!-- Detailed 10-Year Schedule -->
+                <div class="glass-card p-5 rounded-3xl text-xs space-y-3">
+                    <div class="flex justify-between items-center cursor-pointer" onclick="toggleTable('tableContainer', 'tableToggleIcon')">
                         <h3 class="font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
                             <span>📊</span> <span data-i18n="tableTitle">Detailed 10-Year Schedule</span>
                         </h3>
@@ -336,6 +369,31 @@
                                 </tr>
                             </thead>
                             <tbody id="scheduleBody" class="divide-y divide-slate-800/50 text-slate-300">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Quarterly Installments Breakdown Schedule -->
+                <div class="glass-card p-5 rounded-3xl text-xs space-y-3">
+                    <div class="flex justify-between items-center cursor-pointer" onclick="toggleTable('quarterlyContainer', 'quarterlyToggleIcon')">
+                        <h3 class="font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+                            <span>📅</span> <span data-i18n="quarterlyTableTitle">Quarterly Payment Schedule</span>
+                        </h3>
+                        <span id="quarterlyToggleIcon" class="text-amber-400 font-bold">▼</span>
+                    </div>
+                    
+                    <div id="quarterlyContainer" class="hidden overflow-x-auto pt-2 max-h-64 overflow-y-auto">
+                        <table class="w-full text-left border-collapse text-[11px]">
+                            <thead>
+                                <tr class="border-b border-slate-800 text-slate-400">
+                                    <th class="py-2 px-1">#</th>
+                                    <th class="py-2 px-1" data-i18n="thTiming">Timing (Month)</th>
+                                    <th class="py-2 px-1" data-i18n="thAmount">Payment Amount</th>
+                                    <th class="py-2 px-1" data-i18n="thCumulative">Cumulative Paid</th>
+                                </tr>
+                            </thead>
+                            <tbody id="quarterlyScheduleBody" class="divide-y divide-slate-800/50 text-slate-300">
                             </tbody>
                         </table>
                     </div>
@@ -370,7 +428,7 @@
                 if (today <= passInfo.expires) {
                     document.getElementById('lockedScreen').classList.add('hidden');
                     document.getElementById('mainContent').classList.remove('hidden');
-                    document.getElementById('printDate').innerText = new Date().toLocaleDateString();
+                    document.getElementById('printDate').innerText = new Date().toLocaleDateString('en-US');
                     update();
                     return;
                 }
@@ -391,6 +449,8 @@
                 subtitle: "Institutional Investment Engine & Stress Tester",
                 currLabel: "Currency:",
                 pdfBtn: "Export Report",
+                investorLabel: "Client Name:",
+                projectLabel: "Project Name:",
                 projTypeTitle: "Project Status:",
                 typeReady: "⚡ Ready to Move",
                 typeOffplan: "🏗️ Off-Plan (Under Construction)",
@@ -421,6 +481,10 @@
                 cocrDesc: "Post Delivery Yield",
                 dscr: "DSCR Ratio",
                 exitWealth: "10-Yr Exit Wealth",
+                handoverTitle: "🎯 Handover Exit Strategy (Resale Yield)",
+                paidTillHandover: "Paid Till Handover",
+                propertyValueAtHandover: "Est. Market Value",
+                handoverRoi: "ROI on Capital Paid",
                 chartTitle: "10-Year Wealth Accumulation Engine",
                 wfTitle: "ANNUAL CASH FLOW WATERFALL (STABILIZED)",
                 wfGross: "Gross Rent",
@@ -433,12 +497,16 @@
                 chartLabelNominal: "Nominal Wealth",
                 chartLabelReal: "Real Purchasing Power",
                 tableTitle: "Detailed 10-Year Schedule",
+                quarterlyTableTitle: "Quarterly Payment Breakdown Schedule",
                 thYear: "Year",
                 thStatus: "Status",
                 thValue: "Property Value",
                 thNOI: "Net NOI",
                 thDebt: "Installment",
                 thNet: "Net Cash Flow",
+                thTiming: "Timing (Month)",
+                thAmount: "Payment Amount",
+                thCumulative: "Cumulative Paid",
                 statusConst: "🏗️ Under Construction",
                 statusPart: "⏳ Partial Handover",
                 statusRented: "🔑 Rented"
@@ -448,6 +516,8 @@
                 subtitle: "محرك الاستثمار العقاري واختبارات الضغط الهيكلية",
                 currLabel: "العملة:",
                 pdfBtn: "تصدير تقرير",
+                investorLabel: "اسم المستثمر:",
+                projectLabel: "اسم المشروع:",
                 projTypeTitle: "حالة المشروع:",
                 typeReady: "⚡ استلام فوري",
                 typeOffplan: "🏗️ تحت الإنشاء (Off-Plan)",
@@ -478,6 +548,10 @@
                 cocrDesc: "العائد الصافي على الكاش",
                 dscr: "تغطية الإيجار للقسط (DSCR)",
                 exitWealth: "الثروة التراكمية (10 سنوات)",
+                handoverTitle: "🎯 خيار إعادة البيع عند الاستلام (Exit Yield)",
+                paidTillHandover: "المدفوع حتى الاستلام",
+                propertyValueAtHandover: "القيمة السوقية عند التسليم",
+                handoverRoi: "ربح رأس المال المدفوع",
                 chartTitle: "مؤشر تراكم الثروة والقوة الشرائية (10 سنوات)",
                 wfTitle: "مخطط التدفق النقدي السنوي (عند التشغيل)",
                 wfGross: "إجمالي الإيجار",
@@ -490,32 +564,44 @@
                 chartLabelNominal: "الثروة الإسمية",
                 chartLabelReal: "القوة الشرائية الحقيقية",
                 tableTitle: "جدول التدفقات الـ 10 سنوات التفصيلي",
+                quarterlyTableTitle: "جدول سداد الأقساط الربع سنوية بالتفصيل",
                 thYear: "السنة",
                 thStatus: "الحالة",
                 thValue: "قيمة العقار",
                 thNOI: "صافي الإيجار",
                 thDebt: "القسط السنوي",
                 thNet: "الصافي في الجيب",
+                thTiming: "التوقيت (بالشهور)",
+                thAmount: "قيمة الدفعة",
+                thCumulative: "إجمالي المدفوع",
                 statusConst: "🏗️ قيد الإنشاء",
                 statusPart: "⏳ استلام جزئي بالعام",
                 statusRented: "🔑 مؤجر ومستغل"
             }
         };
 
+        function updatePrintMeta() {
+            document.getElementById('printInvestorName').innerText = document.getElementById('investorNameInput').value || 'N/A';
+            document.getElementById('printProjectName').innerText = document.getElementById('projectNameInput').value || 'N/A';
+        }
+
         function setProjectType(type) {
             currentProjectType = type;
             const btnReady = document.getElementById('btnReady');
             const btnOffplan = document.getElementById('btnOffplan');
             const deliveryContainer = document.getElementById('deliveryContainer');
+            const handoverExitCard = document.getElementById('handoverExitCard');
 
             if (type === 'offplan') {
                 btnOffplan.className = "px-3 py-1 rounded-lg font-bold bg-amber-500 text-slate-950 transition-all";
                 btnReady.className = "px-3 py-1 rounded-lg font-bold text-slate-400 hover:text-white transition-all";
                 deliveryContainer.classList.remove('hidden');
+                handoverExitCard.classList.remove('hidden');
             } else {
                 btnReady.className = "px-3 py-1 rounded-lg font-bold bg-amber-500 text-slate-950 transition-all";
                 btnOffplan.className = "px-3 py-1 rounded-lg font-bold text-slate-400 hover:text-white transition-all";
                 deliveryContainer.classList.add('hidden');
+                handoverExitCard.classList.add('hidden');
             }
             update();
         }
@@ -570,9 +656,9 @@
             update();
         }
 
-        function toggleTable() {
-            const container = document.getElementById('tableContainer');
-            const icon = document.getElementById('tableToggleIcon');
+        function toggleTable(containerId, iconId) {
+            const container = document.getElementById(containerId);
+            const icon = document.getElementById(iconId);
             if(container.classList.contains('hidden')) {
                 container.classList.remove('hidden');
                 icon.innerText = '▲';
@@ -584,9 +670,10 @@
 
         function getSymbol() { return document.getElementById('currencySelect').value; }
 
+        // Always format numbers in English digits (1, 2, 3...)
         function fmt(num) {
             let sym = getSymbol();
-            return currentLang === 'ar' ? Math.round(num).toLocaleString('ar-EG') + ' ' + sym : sym + ' ' + Math.round(num).toLocaleString('en-US');
+            return sym + ' ' + Math.round(num).toLocaleString('en-US');
         }
 
         function syncInput(targetId, val) {
@@ -626,6 +713,20 @@
             let cocr = initialEquity > 0 ? ((noi - annualDebt) / initialEquity) * 100 : 0;
             let dscr = annualDebt > 0 ? (noi / annualDebt) : (noi > 0 ? 99 : 0);
 
+            // Handover / Resale Calculations
+            let totalHandoverMonths = deliveryDelay * 12;
+            let totalQuartersHandover = Math.floor(totalHandoverMonths / 3);
+            let quarterlyInstallment = (loanAmount / (term * 4));
+            let paidTillHandover = initialEquity + (totalQuartersHandover * quarterlyInstallment);
+            let propValAtHandover = price * Math.pow(1 + appreciation, deliveryDelay);
+            let capitalGainAtHandover = propValAtHandover - price;
+            let handoverRoi = paidTillHandover > 0 ? (capitalGainAtHandover / paidTillHandover) * 100 : 0;
+
+            document.getElementById('handoverTimeBadge').innerText = `At Year ${deliveryDelay.toLocaleString('en-US')}`;
+            document.getElementById('paidTillHandoverVal').innerText = fmt(paidTillHandover);
+            document.getElementById('propValAtHandoverVal').innerText = fmt(propValAtHandover);
+            document.getElementById('handoverRoiVal').innerText = handoverRoi.toFixed(1).toLocaleString('en-US') + '%';
+
             let years = [1,2,3,4,5,6,7,8,9,10];
             let cumulativeCash = -initialEquity;
             let chartNominalData = [];
@@ -637,12 +738,10 @@
                 let currentNoi = 0;
                 let statusText = i18nData[currentLang].statusRented;
 
-                // Support decimal delivery logic (e.g. 2.5 years)
                 if (y <= Math.floor(deliveryDelay)) {
-                    currentNoi = 0; // Completely under construction
+                    currentNoi = 0;
                     statusText = i18nData[currentLang].statusConst;
                 } else if (y === Math.ceil(deliveryDelay) && deliveryDelay % 1 !== 0) {
-                    // Fractional year (e.g. Year 3 when delivery is 2.5 years -> 0.5 year rental)
                     let rentedFraction = 1 - (deliveryDelay % 1);
                     currentNoi = noi * rentedFraction;
                     statusText = i18nData[currentLang].statusPart;
@@ -663,7 +762,7 @@
 
                 tableRowsHtml += `
                     <tr>
-                        <td class="py-2 px-1 font-bold">${y}</td>
+                        <td class="py-2 px-1 font-bold">${y.toLocaleString('en-US')}</td>
                         <td class="py-2 px-1 text-slate-400 text-[10px]">${statusText}</td>
                         <td class="py-2 px-1 text-purple-400">${fmt(currentPropVal)}</td>
                         <td class="py-2 px-1 text-sky-400">${fmt(currentNoi)}</td>
@@ -674,6 +773,35 @@
             });
 
             document.getElementById('scheduleBody').innerHTML = tableRowsHtml;
+
+            // Generate Quarterly Payment Breakdown Table
+            let totalQuarters = Math.floor(term * 4);
+            let qHtml = `
+                <tr class="bg-slate-800/80 font-bold">
+                    <td class="py-2 px-1">0</td>
+                    <td class="py-2 px-1">Month 0 (Down Payment)</td>
+                    <td class="py-2 px-1 text-sky-400">${fmt(initialEquity)}</td>
+                    <td class="py-2 px-1 text-slate-300">${fmt(initialEquity)}</td>
+                </tr>
+            `;
+            let qCumulative = initialEquity;
+            for(let q = 1; q <= totalQuarters; q++) {
+                let m = q * 3;
+                qCumulative += quarterlyInstallment;
+                let isHandoverPoint = (m === totalHandoverMonths && currentProjectType === 'offplan');
+                let rowBg = isHandoverPoint ? 'class="bg-amber-500/20 font-bold border-amber-500/50"' : '';
+                let labelSuffix = isHandoverPoint ? ' 🔑 (Handover Month)' : '';
+
+                qHtml += `
+                    <tr ${rowBg}>
+                        <td class="py-2 px-1">${q.toLocaleString('en-US')}</td>
+                        <td class="py-2 px-1">Month ${m.toLocaleString('en-US')}${labelSuffix}</td>
+                        <td class="py-2 px-1 text-amber-400">${fmt(quarterlyInstallment)}</td>
+                        <td class="py-2 px-1 text-slate-300">${fmt(qCumulative)}</td>
+                    </tr>
+                `;
+            }
+            document.getElementById('quarterlyScheduleBody').innerHTML = qHtml;
 
             let exitPropVal = price * Math.pow(1 + appreciation, 10);
             let exitWealthNominal = exitPropVal + cumulativeCash;
@@ -688,9 +816,9 @@
             document.getElementById('progressEquity').style.width = eqWidth + '%';
             document.getElementById('progressDebt').style.width = (100 - eqWidth) + '%';
 
-            document.getElementById('kpiCapRate').innerText = capRate.toFixed(1) + '%';
-            document.getElementById('kpiCoCR').innerText = cocr.toFixed(1) + '%';
-            document.getElementById('kpiDscr').innerText = dscr > 50 ? '∞' : dscr.toFixed(2);
+            document.getElementById('kpiCapRate').innerText = capRate.toFixed(1).toLocaleString('en-US') + '%';
+            document.getElementById('kpiCoCR').innerText = cocr.toFixed(1).toLocaleString('en-US') + '%';
+            document.getElementById('kpiDscr').innerText = dscr > 50 ? '∞' : dscr.toFixed(2).toLocaleString('en-US');
 
             let dscrBadge = document.getElementById('dscrBadge');
             if(dscr >= 1.25) {
@@ -716,12 +844,12 @@
             const ctx = document.getElementById('cashFlowChart').getContext('2d');
             if (myChart) myChart.destroy();
 
-            const yearPrefix = currentLang === 'ar' ? 'السنة ' : 'Year ';
+            const yearPrefix = currentLang === 'ar' ? 'Year ' : 'Year ';
 
             myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: labels.map(l => yearPrefix + l),
+                    labels: labels.map(l => yearPrefix + l.toLocaleString('en-US')),
                     datasets: [
                         {
                             label: i18nData[currentLang].chartLabelNominal,
