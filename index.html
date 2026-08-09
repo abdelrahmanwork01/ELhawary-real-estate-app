@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Hawary | Enterprise Real Estate Investment Engine</title>
+    <title>EH Real Estate Advisory | Investment & Stress Testing Engine</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js -->
@@ -49,7 +49,7 @@
             <div class="relative w-24 h-24 rounded-3xl gold-bg flex items-center justify-center font-extrabold text-white text-4xl shadow-2xl">EH</div>
         </div>
         <div class="text-center space-y-2">
-            <h1 class="text-3xl font-extrabold text-white tracking-wide">EL HAWARY</h1>
+            <h1 class="text-3xl font-extrabold text-white tracking-wide">EH REAL ESTATE ADVISORY</h1>
             <p class="text-slate-400 text-xs tracking-widest uppercase font-semibold">Institutional Real Estate Investment Portal</p>
         </div>
         <div class="glass-card p-8 rounded-3xl w-full max-w-sm space-y-5 border border-slate-800">
@@ -63,7 +63,7 @@
             </button>
             <div id="loginError" class="hidden text-rose-400 text-center text-xs font-semibold animate-bounce">رمز المرور غير صحيح أو انتهت صلاحيته!</div>
         </div>
-        <footer class="text-center text-[10px] text-slate-600">Encrypted Institutional Asset Engine © 2026 El Hawary</footer>
+        <footer class="text-center text-[10px] text-slate-600">Encrypted Advisory Engine © 2026 EH Real Estate Advisory</footer>
     </div>
 
     <!-- Main Content Container -->
@@ -73,7 +73,7 @@
         <div class="hidden print-header mb-6 pb-4 border-b border-gray-300">
             <div class="flex justify-between items-center">
                 <div>
-                    <h1 class="text-2xl font-bold text-black">EL HAWARY ASSET MANAGEMENT</h1>
+                    <h1 class="text-2xl font-bold text-black">EH REAL ESTATE ADVISORY</h1>
                     <p class="text-xs text-gray-600">Institutional Investment Memorandum & Stress Test Analysis</p>
                 </div>
                 <div class="text-right text-xs text-gray-500">
@@ -91,10 +91,10 @@
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <span class="text-2xl font-extrabold tracking-wider text-white">EL HAWARY</span>
+                        <span class="text-2xl font-extrabold tracking-wider text-white">EH REAL ESTATE ADVISORY</span>
                         <span class="px-3 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20" data-i18n="badge">GLOBAL ASSETS</span>
                     </div>
-                    <h1 class="text-xs text-slate-400 font-medium tracking-wide" data-i18n="subtitle">Institutional Real Estate Investment Engine & Inflation Stress Tester</h1>
+                    <h1 class="text-xs text-slate-400 font-medium tracking-wide" data-i18n="subtitle">Institutional Real Estate Investment Engine & Stress Tester</h1>
                 </div>
             </div>
 
@@ -111,10 +111,6 @@
                             <option value="$" selected>USD ($)</option>
                             <option value="€">EUR (€)</option>
                             <option value="£">GBP (£)</option>
-                            <option value="CAD $">CAD ($)</option>
-                            <option value="AUD $">AUD ($)</option>
-                            <option value="CHF">CHF (Fr)</option>
-                            <option value="¥">JPY (¥)</option>
                         </optgroup>
                         <optgroup label="Arab Currencies">
                             <option value="ج.م">EGP (ج.م)</option>
@@ -122,8 +118,6 @@
                             <option value="د.إ">AED (د.إ)</option>
                             <option value="ر.ق">QAR (ر.ق)</option>
                             <option value="د.ك">KWD (د.ك)</option>
-                            <option value="د.ب">BHD (د.ب)</option>
-                            <option value="ر.ع">OMR (ر.ع)</option>
                         </optgroup>
                     </select>
                 </div>
@@ -134,26 +128,35 @@
             </div>
         </header>
 
-        <!-- Scenario Bar -->
-        <section class="max-w-7xl mx-auto mb-6 glass-card p-3 rounded-2xl flex flex-wrap items-center justify-between gap-3 no-print">
-            <div class="flex items-center gap-2">
-                <span class="text-xs font-bold text-slate-300" data-i18n="scenarioTitle">Investment Scenario Engine:</span>
+        <!-- Scenario & Project Type Bar -->
+        <section class="max-w-7xl mx-auto mb-6 glass-card p-4 rounded-2xl flex flex-wrap items-center justify-between gap-4 no-print">
+            
+            <!-- Project Type Selection -->
+            <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-slate-300" data-i18n="projTypeTitle">Project Status:</span>
+                <div class="flex items-center bg-slate-900/90 p-1 rounded-xl border border-slate-700 text-xs">
+                    <button onclick="setProjectType('ready')" id="btnReady" class="px-3 py-1 rounded-lg font-bold bg-amber-500 text-slate-950 transition-all" data-i18n="typeReady">⚡ Ready to Move</button>
+                    <button onclick="setProjectType('offplan')" id="btnOffplan" class="px-3 py-1 rounded-lg font-bold text-slate-400 hover:text-white transition-all" data-i18n="typeOffplan">🏗️ Off-Plan (Under Construction)</button>
+                </div>
             </div>
+
+            <!-- Scenarios -->
             <div class="flex items-center gap-2">
-                <button onclick="applyScenario('bull')" id="scenBull" class="px-3 py-1.5 rounded-xl text-xs font-bold border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 transition-all" data-i18n="scenBull">🟢 Bull Case (Best)</button>
-                <button onclick="applyScenario('base')" id="scenBase" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/40 transition-all" data-i18n="scenBase">🟡 Base Case (Expected)</button>
-                <button onclick="applyScenario('stress')" id="scenStress" class="px-3 py-1.5 rounded-xl text-xs font-bold border border-rose-500/30 text-rose-400 hover:bg-rose-500/10 transition-all" data-i18n="scenStress">🔴 Stress Test (Worst)</button>
+                <span class="text-xs font-bold text-slate-300 hidden md:inline" data-i18n="scenarioTitle">Scenario:</span>
+                <button onclick="applyScenario('bull')" id="scenBull" class="px-3 py-1.5 rounded-xl text-xs font-bold border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 transition-all" data-i18n="scenBull">🟢 Bull Case</button>
+                <button onclick="applyScenario('base')" id="scenBase" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/40 transition-all" data-i18n="scenBase">🟡 Base Case</button>
+                <button onclick="applyScenario('stress')" id="scenStress" class="px-3 py-1.5 rounded-xl text-xs font-bold border border-rose-500/30 text-rose-400 hover:bg-rose-500/10 transition-all" data-i18n="scenStress">🔴 Stress Test</button>
             </div>
         </section>
 
-        <!-- Grid -->
+        <!-- Main Grid -->
         <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
             
             <!-- Controls -->
             <section class="lg:col-span-5 glass-card p-6 rounded-3xl space-y-5">
                 <div class="flex justify-between items-center border-b border-slate-800 pb-3">
                     <h2 class="text-sm font-bold text-sky-400 uppercase tracking-wider" data-i18n="sec1">1. Capital & Financing</h2>
-                    <span class="text-xs text-slate-500" data-i18n="manualMode">Manual / Slider Input</span>
+                    <span class="text-xs text-slate-500" data-i18n="manualMode">Manual Input</span>
                 </div>
 
                 <div class="space-y-1.5">
@@ -174,27 +177,37 @@
                         <input type="range" id="down" min="0" max="100" step="5" value="20" oninput="syncInput('downNum', this.value)" class="w-full h-1.5 bg-slate-800 rounded-lg cursor-pointer">
                     </div>
                     <div class="space-y-1.5">
-                        <label class="text-xs text-slate-300 font-semibold block" data-i18n="termLabel">Loan Term (Years)</label>
-                        <input type="number" id="termNum" value="10" min="1" max="30" oninput="syncInput('term', this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm font-bold text-sky-400 focus:border-sky-500 focus:outline-none">
-                        <input type="range" id="term" min="1" max="30" step="1" value="10" oninput="syncInput('termNum', this.value)" class="w-full h-1.5 bg-slate-800 rounded-lg cursor-pointer">
+                        <label class="text-xs text-slate-300 font-semibold block" data-i18n="termLabel">Installment / Loan Term (Years)</label>
+                        <input type="number" id="termNum" value="7" min="1" max="30" oninput="syncInput('term', this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm font-bold text-sky-400 focus:border-sky-500 focus:outline-none">
+                        <input type="range" id="term" min="1" max="30" step="1" value="7" oninput="syncInput('termNum', this.value)" class="w-full h-1.5 bg-slate-800 rounded-lg cursor-pointer">
                     </div>
                 </div>
 
+                <!-- Delivery Years Input (Appears only for Off-Plan) -->
+                <div id="deliveryContainer" class="space-y-1.5 hidden bg-amber-500/10 p-3 rounded-2xl border border-amber-500/20">
+                    <div class="flex justify-between items-center">
+                        <label class="text-xs text-amber-400 font-bold block" data-i18n="deliveryLabel">Delivery Time (Years Until Handover)</label>
+                        <span id="deliveryValDisplay" class="text-xs font-extrabold text-amber-400">2 Years</span>
+                    </div>
+                    <input type="range" id="deliveryYears" min="1" max="5" step="1" value="2" oninput="updateDeliveryDisplay(this.value)" class="w-full h-2 bg-slate-800 rounded-lg cursor-pointer">
+                    <p class="text-[10px] text-slate-400" data-i18n="deliveryDesc">* Rental income will start only after delivery year.</p>
+                </div>
+
                 <div class="space-y-1.5">
-                    <label class="text-xs text-slate-300 font-semibold block" data-i18n="interestLabel">Interest / Financing Rate (%)</label>
+                    <label class="text-xs text-slate-300 font-semibold block" data-i18n="interestLabel">Interest / Fin. Rate (%)</label>
                     <div class="flex items-center gap-2">
-                        <input type="number" id="interestNum" value="7.0" step="0.1" oninput="syncInput('interest', this.value)" class="w-1/2 bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm font-bold text-amber-400 focus:border-sky-500 focus:outline-none">
-                        <input type="range" id="interest" min="0" max="25" step="0.25" value="7" oninput="syncInput('interestNum', this.value)" class="w-1/2 h-2 bg-slate-800 rounded-lg cursor-pointer">
+                        <input type="number" id="interestNum" value="0.0" step="0.1" oninput="syncInput('interest', this.value)" class="w-1/2 bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm font-bold text-amber-400 focus:border-sky-500 focus:outline-none">
+                        <input type="range" id="interest" min="0" max="25" step="0.25" value="0" oninput="syncInput('interestNum', this.value)" class="w-1/2 h-2 bg-slate-800 rounded-lg cursor-pointer">
                     </div>
                 </div>
 
                 <div class="flex justify-between items-center border-b border-slate-800 pt-3 pb-2">
-                    <h2 class="text-sm font-bold text-emerald-400 uppercase tracking-wider" data-i18n="sec2">2. Income & Growth Dynamics</h2>
+                    <h2 class="text-sm font-bold text-emerald-400 uppercase tracking-wider" data-i18n="sec2">2. Income & Market Dynamics</h2>
                 </div>
 
                 <div class="space-y-1.5">
                     <div class="flex justify-between text-xs">
-                        <label class="text-slate-300 font-semibold" data-i18n="rentLabel">Expected Monthly Rent</label>
+                        <label class="text-slate-300 font-semibold" data-i18n="rentLabel">Expected Monthly Rent (At Delivery)</label>
                         <span class="currSym text-slate-400">$</span>
                     </div>
                     <div class="flex items-center gap-2">
@@ -216,8 +229,8 @@
 
                 <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-1.5">
-                        <label class="text-xs text-slate-300 font-semibold block" data-i18n="growthLabel">Property Growth (%)</label>
-                        <input type="number" id="growthNum" value="4.0" step="0.5" oninput="update()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm font-bold text-purple-400 focus:border-sky-500 focus:outline-none">
+                        <label class="text-xs text-slate-300 font-semibold block" data-i18n="growthLabel">Annual Appreciation (%)</label>
+                        <input type="number" id="growthNum" value="5.0" step="0.5" oninput="update()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm font-bold text-purple-400 focus:border-sky-500 focus:outline-none">
                     </div>
                     <div class="space-y-1.5">
                         <label class="text-xs text-amber-400 font-semibold block" data-i18n="inflationLabel">Est. Inflation Rate (%)</label>
@@ -227,8 +240,8 @@
 
                 <div class="pt-2 space-y-1">
                     <div class="flex justify-between text-[11px] text-slate-400">
-                        <span><span data-i18n="equityNeeded">Equity Needed</span>: <strong id="barEquity" class="text-sky-400">$0</strong></span>
-                        <span><span data-i18n="debtFinanced">Debt Financed</span>: <strong id="barDebt" class="text-amber-400">$0</strong></span>
+                        <span><span data-i18n="equityNeeded">Down Payment</span>: <strong id="barEquity" class="text-sky-400">$0</strong></span>
+                        <span><span data-i18n="debtFinanced">Financed Balance</span>: <strong id="barDebt" class="text-amber-400">$0</strong></span>
                     </div>
                     <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden flex">
                         <div id="progressEquity" class="bg-sky-500 h-full transition-all duration-300" style="width: 20%"></div>
@@ -245,12 +258,12 @@
                     <div class="glass-card glass-card-hover p-4 rounded-2xl">
                         <span class="text-xs text-slate-400 block mb-1" data-i18n="capRate">Cap Rate</span>
                         <span id="kpiCapRate" class="text-2xl font-extrabold text-sky-400">0.0%</span>
-                        <span class="text-[10px] text-slate-500 block mt-1" data-i18n="capDesc">Unlevered Return</span>
+                        <span class="text-[10px] text-slate-500 block mt-1" data-i18n="capDesc">At Stabilization</span>
                     </div>
                     <div class="glass-card glass-card-hover p-4 rounded-2xl border-emerald-500/20">
                         <span class="text-xs text-slate-400 block mb-1" data-i18n="cocr">Cash-on-Cash</span>
                         <span id="kpiCoCR" class="text-2xl font-extrabold text-emerald-400">0.0%</span>
-                        <span class="text-[10px] text-slate-500 block mt-1" data-i18n="cocrDesc">Levered Yield</span>
+                        <span class="text-[10px] text-slate-500 block mt-1" data-i18n="cocrDesc">Post Delivery Yield</span>
                     </div>
                     <div class="glass-card glass-card-hover p-4 rounded-2xl">
                         <span class="text-xs text-slate-400 block mb-1" data-i18n="dscr">DSCR Ratio</span>
@@ -276,7 +289,7 @@
 
                 <div class="glass-card p-5 rounded-3xl text-xs space-y-3">
                     <div class="flex justify-between font-bold border-b border-slate-800 pb-2 text-slate-300">
-                        <span data-i18n="wfTitle">ANNUAL CASH FLOW WATERFALL</span>
+                        <span data-i18n="wfTitle">ANNUAL CASH FLOW WATERFALL (STABILIZED)</span>
                         <span class="currSym">$</span>
                     </div>
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
@@ -289,7 +302,7 @@
                             <strong id="wfNoi" class="text-sky-400 text-sm">$0</strong>
                         </div>
                         <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
-                            <span class="text-slate-400 block text-[10px]" data-i18n="wfDebt">Debt Service</span>
+                            <span class="text-slate-400 block text-[10px]" data-i18n="wfDebt">Annual Installment</span>
                             <strong id="wfDebt" class="text-amber-400 text-sm">$0</strong>
                         </div>
                         <div class="p-3 rounded-xl bg-slate-900/60 border border-emerald-500/30">
@@ -312,9 +325,10 @@
                             <thead>
                                 <tr class="border-b border-slate-800 text-slate-400">
                                     <th class="py-2 px-1" data-i18n="thYear">Year</th>
+                                    <th class="py-2 px-1" data-i18n="thStatus">Status</th>
                                     <th class="py-2 px-1" data-i18n="thValue">Property Value</th>
                                     <th class="py-2 px-1" data-i18n="thNOI">NOI</th>
-                                    <th class="py-2 px-1" data-i18n="thDebt">Debt</th>
+                                    <th class="py-2 px-1" data-i18n="thDebt">Installments</th>
                                     <th class="py-2 px-1" data-i18n="thNet">Net Cash Flow</th>
                                 </tr>
                             </thead>
@@ -329,20 +343,20 @@
         </main>
 
         <footer class="max-w-7xl mx-auto mt-8 border-t border-slate-800/80 pb-6 pt-4 text-center space-y-1">
-            <div class="text-[10px] text-amber-400 font-bold tracking-widest uppercase">EL HAWARY Asset Management</div>
-            <p class="text-[10px] text-slate-500">© 2026 جميع الحقوق محفوظة لـ El Hawary. يمنع التوزيع أو النسخ غير المصرح به.</p>
+            <div class="text-[10px] text-amber-400 font-bold tracking-widest uppercase">EH Real Estate Advisory</div>
+            <p class="text-[10px] text-slate-500">© 2026 جميع الحقوق محفوظة لـ EH Real Estate Advisory. يمنع التوزيع غير المصرح به.</p>
         </footer>
 
     </div>
 
-    <!-- Script Logic & Multi-User Passcodes -->
+    <!-- Script Logic -->
     <script>
-        // Managing Client Access & Passcodes with Expiration Dates
         const VALID_PASSCODES = {
-            "EH2026": { client: "Marwan / El Hawary (Founders)", expires: "2030-12-31" },
-            "INVESTOR1": { client: "Corporate Client A", expires: "2026-12-31" },
-            "CLIENT2026": { client: "VIP Trial Account", expires: "2026-09-30" }
+            "EH2026": { client: "Abdelrahman El Hawary (Founder)", expires: "2030-12-31" },
+            "INVESTOR1": { client: "VIP Investor Account", expires: "2026-12-31" }
         };
+
+        let currentProjectType = 'ready'; // 'ready' or 'offplan'
 
         function checkAccess() {
             const inputCode = document.getElementById('passcodeField').value.trim();
@@ -371,99 +385,138 @@
         const i18nData = {
             en: {
                 badge: "GLOBAL ASSETS",
-                subtitle: "Institutional Real Estate Investment Engine & Stress Testing Portal",
+                subtitle: "Institutional Investment Engine & Stress Tester",
                 currLabel: "Currency:",
                 pdfBtn: "Export Report",
-                scenarioTitle: "Investment Scenario:",
-                scenBull: "🟢 Bull Case (Best)",
-                scenBase: "🟡 Base Case (Expected)",
-                scenStress: "🔴 Stress Test (Worst)",
+                projTypeTitle: "Project Status:",
+                typeReady: "⚡ Ready to Move",
+                typeOffplan: "🏗️ Off-Plan (Under Construction)",
+                scenarioTitle: "Scenario:",
+                scenBull: "🟢 Bull Case",
+                scenBase: "🟡 Base Case",
+                scenStress: "🔴 Stress Test",
                 sec1: "1. Capital & Financing",
-                manualMode: "Manual / Slider Input",
+                manualMode: "Manual Input",
                 priceLabel: "Purchase Price",
                 downLabel: "Down Payment (%)",
-                termLabel: "Loan Term (Years)",
-                interestLabel: "Interest / Financing Rate (%)",
-                sec2: "2. Income & Growth Dynamics",
-                rentLabel: "Expected Monthly Rent",
+                termLabel: "Installment / Loan Term (Years)",
+                deliveryLabel: "Delivery Time (Years Until Handover)",
+                deliveryDesc: "* Rental income will start only after delivery year.",
+                interestLabel: "Interest / Fin. Rate (%)",
+                sec2: "2. Income & Market Dynamics",
+                rentLabel: "Expected Monthly Rent (At Delivery)",
                 vacancyLabel: "Vacancy Rate (%)",
                 opexLabel: "OpEx Ratio (%)",
-                growthLabel: "Property Growth (%)",
+                growthLabel: "Annual Appreciation (%)",
                 inflationLabel: "Est. Inflation Rate (%)",
-                equityNeeded: "Equity Needed",
-                debtFinanced: "Debt Financed",
+                equityNeeded: "Down Payment",
+                debtFinanced: "Financed Balance",
                 capRate: "Cap Rate",
-                capDesc: "Unlevered Return",
+                capDesc: "At Stabilization",
                 cocr: "Cash-on-Cash",
-                cocrDesc: "Levered Yield",
+                cocrDesc: "Post Delivery Yield",
                 dscr: "DSCR Ratio",
                 exitWealth: "10-Yr Exit Wealth",
                 chartTitle: "10-Year Wealth Accumulation Engine",
-                wfTitle: "ANNUAL CASH FLOW WATERFALL",
+                wfTitle: "ANNUAL CASH FLOW WATERFALL (STABILIZED)",
                 wfGross: "Gross Rent",
                 wfNoi: "Net NOI",
-                wfDebt: "Debt Service",
+                wfDebt: "Annual Installment",
                 wfNet: "Net Cash Flow",
                 safeRisk: "Low Risk",
                 modRisk: "Moderate Risk",
                 highRisk: "High Risk",
                 chartLabelNominal: "Nominal Wealth",
-                chartLabelReal: "Real Purchasing Power (Inflation Adjusted)",
+                chartLabelReal: "Real Purchasing Power",
                 tableTitle: "Detailed 10-Year Schedule",
                 thYear: "Year",
+                thStatus: "Status",
                 thValue: "Property Value",
                 thNOI: "Net NOI",
-                thDebt: "Annual Debt",
-                thNet: "Net Cash Flow"
+                thDebt: "Installment",
+                thNet: "Net Cash Flow",
+                statusConst: "🏗️ Under Construction",
+                statusRented: "🔑 Rented"
             },
             ar: {
                 badge: "الأصول العالمية",
-                subtitle: "محرك القرارات الاستثمارية واختبارات الضغط للحقائب العقارية",
+                subtitle: "محرك الاستثمار العقاري واختبارات الضغط الهيكلية",
                 currLabel: "العملة:",
                 pdfBtn: "تصدير تقرير",
-                scenarioTitle: "سيناريوهات الاستثمار:",
+                projTypeTitle: "حالة المشروع:",
+                typeReady: "⚡ استلام فوري",
+                typeOffplan: "🏗️ تحت الإنشاء (Off-Plan)",
+                scenarioTitle: "السيناريو:",
                 scenBull: "🟢 السيناريو الأفضل",
-                scenBase: "🟡 السيناريو المتوقع",
-                scenStress: "🔴 اختبار الضغط (الأسوأ)",
-                sec1: "1. رأس المال والتمويل",
-                manualMode: "إدخال يدوي / شريط سحب",
+                scenBase: "🟡 المتوقع",
+                scenStress: "🔴 اختبار الضغط",
+                sec1: "1. رأس المال والأقساط",
+                manualMode: "إدخال يدوي",
                 priceLabel: "سعر الشراء الإجمالي",
-                downLabel: "نسبة الدفعة الأولى (%)",
-                termLabel: "مدة التمويل (سنوات)",
-                interestLabel: "نسبة الفائدة / التمويل (%)",
-                sec2: "2. ديناميكية الدخل والنمو",
-                rentLabel: "الإيجار الشهري المتوقع",
+                downLabel: "نسبة المقدم (%)",
+                termLabel: "مدة السداد / الأقساط (سنوات)",
+                deliveryLabel: "مدة الاستلام (سنوات حتى التسليم)",
+                deliveryDesc: "* يبدأ تحصيل الإيجار فقط بعد سنة الاستلام.",
+                interestLabel: "نسبة الفائدة / التحميل (%)",
+                sec2: "2. الإيجارات وديناميكية السوق",
+                rentLabel: "الإيجار الشهري المتوقع (عند الاستلام)",
                 vacancyLabel: "نسبة الشاغر المتوقعة (%)",
-                opexLabel: "مصاريف التشغيل والصيانة (%)",
-                growthLabel: "نمو قيمة العقار (%)",
+                opexLabel: "مصاريف الصيانة والتشغيل (%)",
+                growthLabel: "نمو قيمة العقار السنوي (%)",
                 inflationLabel: "معدل التضخم السنوي (%)",
-                equityNeeded: "الرأس المال المطلوب كاش",
-                debtFinanced: "مبلغ التمويل / الأقساط",
-                capRate: "معدل العائد الرأسمالي (Cap Rate)",
-                capDesc: "العائد قبل التمويل",
-                cocr: "العائد على النقد (Cash-on-Cash)",
+                equityNeeded: "المقدم المطلوب كاش",
+                debtFinanced: "إجمالي المتبقي للأقساط",
+                capRate: "معدل العائد (Cap Rate)",
+                capDesc: "بعد التشغيل والاستقرار",
+                cocr: "العائد على النقد (CoC)",
                 cocrDesc: "العائد الصافي على الكاش",
-                dscr: "نسبة تغطية الدين (DSCR)",
+                dscr: "تغطية الإيجار للقسط (DSCR)",
                 exitWealth: "الثروة التراكمية (10 سنوات)",
                 chartTitle: "مؤشر تراكم الثروة والقوة الشرائية (10 سنوات)",
-                wfTitle: "مخطط التدفق النقدي السنوي",
+                wfTitle: "مخطط التدفق النقدي السنوي (عند التشغيل)",
                 wfGross: "إجمالي الإيجار",
-                wfNoi: "صافي الدخل (NOI)",
-                wfDebt: "خدمة الدين / القسط",
+                wfNoi: "صافي NOI",
+                wfDebt: "القسط السنوي",
                 wfNet: "الصافي في الجيب",
-                safeRisk: "مخاطر منخفضة (آمن)",
+                safeRisk: "آمن جداً",
                 modRisk: "مخاطر متوسطة",
                 highRisk: "مخاطر مرتفعة",
                 chartLabelNominal: "الثروة الإسمية",
-                chartLabelReal: "القوة الشرائية الحقيقية (بعد التضخم)",
-                tableTitle: "جدول تدفقات الـ 10 سنوات التفصيلي",
+                chartLabelReal: "القوة الشرائية الحقيقية",
+                tableTitle: "جدول التدفقات الـ 10 سنوات التفصيلي",
                 thYear: "السنة",
-                thValue: "قيمة العقار المتزايدة",
-                thNOI: "صافي التشغيل (NOI)",
+                thStatus: "الحالة",
+                thValue: "قيمة العقار",
+                thNOI: "صافي الإيجار",
                 thDebt: "القسط السنوي",
-                thNet: "الصافي في الجيب"
+                thNet: "الصافي في الجيب",
+                statusConst: "🏗️ قيد الإنشاء",
+                statusRented: "🔑 مؤجر ومستغل"
             }
         };
+
+        function setProjectType(type) {
+            currentProjectType = type;
+            const btnReady = document.getElementById('btnReady');
+            const btnOffplan = document.getElementById('btnOffplan');
+            const deliveryContainer = document.getElementById('deliveryContainer');
+
+            if (type === 'offplan') {
+                btnOffplan.className = "px-3 py-1 rounded-lg font-bold bg-amber-500 text-slate-950 transition-all";
+                btnReady.className = "px-3 py-1 rounded-lg font-bold text-slate-400 hover:text-white transition-all";
+                deliveryContainer.classList.remove('hidden');
+            } else {
+                btnReady.className = "px-3 py-1 rounded-lg font-bold bg-amber-500 text-slate-950 transition-all";
+                btnOffplan.className = "px-3 py-1 rounded-lg font-bold text-slate-400 hover:text-white transition-all";
+                deliveryContainer.classList.add('hidden');
+            }
+            update();
+        }
+
+        function updateDeliveryDisplay(val) {
+            document.getElementById('deliveryValDisplay').innerText = val + (currentLang === 'ar' ? ' سنوات' : ' Years');
+            update();
+        }
 
         function setLanguage(lang) {
             currentLang = lang;
@@ -482,6 +535,7 @@
                 if(i18nData[lang][key]) el.innerText = i18nData[lang][key];
             });
 
+            updateDeliveryDisplay(document.getElementById('deliveryYears').value);
             update();
         }
 
@@ -494,17 +548,17 @@
                 document.getElementById('scenBull').className = "px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 transition-all";
                 document.getElementById('vacancyNum').value = 2;
                 document.getElementById('opexNum').value = 8;
-                document.getElementById('growthNum').value = 6.0;
+                document.getElementById('growthNum').value = 8.0;
             } else if(type === 'stress') {
                 document.getElementById('scenStress').className = "px-3 py-1.5 rounded-xl text-xs font-bold bg-rose-500/20 text-rose-400 border border-rose-500/50 transition-all";
                 document.getElementById('vacancyNum').value = 20;
                 document.getElementById('opexNum').value = 18;
-                document.getElementById('growthNum').value = 1.0;
+                document.getElementById('growthNum').value = 2.0;
             } else {
                 document.getElementById('scenBase').className = "px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/50 transition-all";
                 document.getElementById('vacancyNum').value = 5;
                 document.getElementById('opexNum').value = 10;
-                document.getElementById('growthNum').value = 4.0;
+                document.getElementById('growthNum').value = 5.0;
             }
             update();
         }
@@ -553,32 +607,50 @@
             let opex = (parseFloat(document.getElementById('opexNum').value) || 0) / 100;
             let appreciation = (parseFloat(document.getElementById('growthNum').value) || 0) / 100;
             let inflation = (parseFloat(document.getElementById('inflationNum').value) || 0) / 100;
+            let deliveryDelay = currentProjectType === 'offplan' ? (parseInt(document.getElementById('deliveryYears').value) || 0) : 0;
 
             let initialEquity = price * downPct;
             let loanAmount = Math.max(0, price - initialEquity);
             let grossRentAnnual = rent * 12;
             let noi = (grossRentAnnual * (1 - vacancy)) * (1 - opex);
-            let annualDebt = loanAmount > 0 ? calculatePMT(interest, term, loanAmount) : 0;
-            let cashFlow = noi - annualDebt;
+            let annualDebt = term > 0 ? calculatePMT(interest, term, loanAmount) : 0;
 
             let capRate = price > 0 ? (noi / price) * 100 : 0;
-            let cocr = initialEquity > 0 ? (cashFlow / initialEquity) * 100 : 0;
+            let cocr = initialEquity > 0 ? ((noi - annualDebt) / initialEquity) * 100 : 0;
             let dscr = annualDebt > 0 ? (noi / annualDebt) : (noi > 0 ? 99 : 0);
 
             let years = [1,2,3,4,5,6,7,8,9,10];
-            let cumulativeCash = 0;
+            let cumulativeCash = -initialEquity;
             let chartNominalData = [];
             let chartRealData = [];
             let tableRowsHtml = '';
-            let currentPropVal = price;
+            let remainingDebt = loanAmount;
 
             years.forEach(y => {
-                currentPropVal = price * Math.pow(1 + appreciation, y);
-                let currentNoi = noi * Math.pow(1.025, y-1);
-                let currentCF = currentNoi - annualDebt;
+                let currentPropVal = price * Math.pow(1 + appreciation, y);
+                let currentNoi = 0;
+                let statusText = i18nData[currentLang].statusRented;
+
+                // Checking Off-Plan Delay logic
+                if (y <= deliveryDelay) {
+                    currentNoi = 0; // No rent before delivery
+                    statusText = i18nData[currentLang].statusConst;
+                } else {
+                    let operationalYear = y - deliveryDelay;
+                    currentNoi = noi * Math.pow(1.03, operationalYear - 1);
+                }
+
+                let currentDebtPayment = y <= term ? annualDebt : 0;
+                let currentCF = currentNoi - currentDebtPayment;
                 cumulativeCash += currentCF;
 
-                let nominalWealth = Math.round(currentPropVal + cumulativeCash - loanAmount);
+                if (y <= term) {
+                    remainingDebt = Math.max(0, loanAmount - (annualDebt * y)); // Simplified principal payoff
+                } else {
+                    remainingDebt = 0;
+                }
+
+                let nominalWealth = Math.round(currentPropVal + cumulativeCash);
                 let realWealth = Math.round(nominalWealth / Math.pow(1 + inflation, y));
 
                 chartNominalData.push(nominalWealth);
@@ -587,9 +659,10 @@
                 tableRowsHtml += `
                     <tr>
                         <td class="py-2 px-1 font-bold">${y}</td>
+                        <td class="py-2 px-1 text-slate-400 text-[10px]">${statusText}</td>
                         <td class="py-2 px-1 text-purple-400">${fmt(currentPropVal)}</td>
                         <td class="py-2 px-1 text-sky-400">${fmt(currentNoi)}</td>
-                        <td class="py-2 px-1 text-amber-400">${fmt(annualDebt)}</td>
+                        <td class="py-2 px-1 text-amber-400">${fmt(currentDebtPayment)}</td>
                         <td class="py-2 px-1 ${currentCF >= 0 ? 'text-emerald-400' : 'text-rose-400'} font-bold">${fmt(currentCF)}</td>
                     </tr>
                 `;
@@ -597,7 +670,8 @@
 
             document.getElementById('scheduleBody').innerHTML = tableRowsHtml;
 
-            let exitWealthNominal = currentPropVal + cumulativeCash - loanAmount;
+            let exitPropVal = price * Math.pow(1 + appreciation, 10);
+            let exitWealthNominal = exitPropVal + cumulativeCash;
             let exitWealthReal = exitWealthNominal / Math.pow(1 + inflation, 10);
             
             document.getElementById('kpiExitWealth').innerText = fmt(exitWealthNominal);
@@ -628,7 +702,7 @@
             document.getElementById('wfGross').innerText = fmt(grossRentAnnual);
             document.getElementById('wfNoi').innerText = fmt(noi);
             document.getElementById('wfDebt').innerText = fmt(annualDebt);
-            document.getElementById('wfNet').innerText = fmt(cashFlow);
+            document.getElementById('wfNet').innerText = fmt(noi - annualDebt);
 
             updateChart(years, chartNominalData, chartRealData);
         }
